@@ -5,10 +5,33 @@ import * as CNECallbacks from './data/callbacks.json';
 import * as CNETypes from './data/types.json';
 import * as CNEVariables from './data/variables.json';
 
+// List of pre-imported libraries from Script.hx (thanks furo)
+// https://github.com/CodenameCrew/CodenameEngine/blob/main/source/funkin/backend/scripting/Script.hx
+const preImportedLibraries = [
+    "Std", "Math", "Reflect", "StringTools", "haxe.Json",
+    "openfl.utils.Assets", "lime.app.Application", "funkin.backend.system.Main", "lime.app.Application.current.window",
+    "flixel.FlxG", "flixel.FlxSprite", "flixel.FlxBasic", "flixel.FlxCamera", "flixel.FlxG.state", "flixel.tweens.FlxEase",
+    "flixel.tweens.FlxTween", "flixel.sound.FlxSound", "flixel.system.FlxAssets", "flixel.math.FlxMath", "flixel.group.FlxGroup",
+    "flixel.group.FlxGroup.FlxTypedGroup", "flixel.group.FlxSpriteGroup", "flixel.addons.text.FlxTypeText", "flixel.text.FlxText",
+    "flixel.util.FlxTimer", "flixel.math.FlxPoint", "flixel.util.FlxAxes",
+    "flixel.util.FlxColor", "funkin.backend.system.macros.GitCommitMacro.commitNumber",
+    "funkin.backend.system.macros.GitCommitMacro.commitHash", "funkin.backend.scripting.ModState", "funkin.backend.scripting.ModSubState",
+    "funkin.game.PlayState", "funkin.game.GameOverSubstate", "funkin.game.HealthIcon", "funkin.game.HudCamera", "funkin.game.Note",
+    "funkin.game.Strum", "funkin.game.StrumLine", "funkin.game.Character", "funkin.menus.PauseSubState", "funkin.menus.FreeplayState",
+    "funkin.menus.MainMenuState", "funkin.menus.StoryMenuState", "funkin.menus.TitleState", "funkin.options.Options", "funkin.backend.assets.Paths",
+    "funkin.backend.system.Conductor", "funkin.backend.shaders.FunkinShader", "funkin.backend.shaders.CustomShader", "funkin.backend.FunkinText",
+    "funkin.backend.FlxAnimate", "funkin.backend.FunkinSprite", "funkin.menus.ui.Alphabet", "funkin.backend.utils.CoolUtil", "funkin.backend.utils.IniUtil",
+    "funkin.backend.utils.XMLUtil", "funkin.backend.utils.ZipUtil", "funkin.backend.utils.MarkdownUtil", "funkin.backend.utils.EngineUtil",
+    "funkin.backend.utils.MemoryUtil", "funkin.backend.utils.BitmapUtil"
+];
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Codename Autocomplete is Running! | VSCode Version: ' + vscode.version);
+
+	    const diagnosticCollection = vscode.languages.createDiagnosticCollection('cneextension');
+    context.subscriptions.push(diagnosticCollection);
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
@@ -179,7 +202,22 @@ export function activate(context: vscode.ExtensionContext) {
                     }
                 }
             }
-
+			// Check for pre-imported libraries and add warnings
+			const text = document.getText();
+			const diagnostics: vscode.Diagnostic[] = [];
+			preImportedLibraries.forEach(library => {
+				const regex = new RegExp(`import\\s+${library.replace('.', '\\.')}`, 'g');
+				let match;
+				while ((match = regex.exec(text)) !== null) {
+					const diagnostic = new vscode.Diagnostic(
+						new vscode.Range(document.positionAt(match.index), document.positionAt(match.index + match[0].length)),
+						`The library '${library}' is already pre-imported, No need to import it in.`,
+						vscode.DiagnosticSeverity.Warning
+					);
+					diagnostics.push(diagnostic);
+				}
+			});
+			diagnosticCollection.set(document.uri, diagnostics);
             return new vscode.CompletionList(completionItems, false);
         }
     }));
