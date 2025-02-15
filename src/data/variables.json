@@ -1,0 +1,559 @@
+{
+    "variables": [
+        {
+            "name": "instance",
+            "type": "PlayState",
+            "description": "Current PlayState instance."
+        },
+        {
+            "name": "SONG",
+            "type": "ChartData",
+            "description": "SONG DATA (Chart, Metadata)"
+        },
+        {
+            "name": "isStoryMode",
+            "type": "Bool",
+            "description": "Whenever the song is being played in Story Mode."
+        },
+        {
+            "name": "storyWeek",
+            "type": "WeekData",
+            "description": "The week data of the current week."
+        },
+        {
+            "name": "storyPlaylist",
+            "type": "Array<String>",
+            "description": "The remaining songs in the Story Mode playlist."
+        },
+        {
+            "name": "difficulty",
+            "type": "String",
+            "description": "The selected difficulty name."
+        },
+        {
+            "name": "fromMods",
+            "type": "Bool",
+            "description": "Whenever the week is coming from the mods folder or not."
+        },
+        {
+            "name": "chartingMode",
+            "type": "Bool",
+            "description": "Whenever Charting Mode has been enabled for this song."
+        },
+        {
+            "name": "opponentMode",
+            "type": "Bool",
+            "description": "Whenever the song has been started with opponent mode on."
+        },
+        {
+            "name": "coopMode",
+            "type": "Bool",
+            "description": "Whenever the song has been started with co-op mode on."
+        },
+        {
+            "name": "scripts",
+            "type": "ScriptPack",
+            "description": "Script Pack of all the scripts being ran."
+        },
+        {
+            "name": "strumLines",
+            "type": "FlxTypedGroup<StrumLine>",
+            "description": "Array of all the players in the stage."
+        },
+        {
+            "name": "deathCounter",
+            "type": "Int",
+            "description": "Death counter on current week (or song if from freeplay)."
+        },
+        {
+            "name": "gameOverSong",
+            "type": "String",
+            "description": "Game Over Song. (assets/music/gameOver.ogg)"
+        },
+        {
+            "name": "lossSFX",
+            "type": "String",
+            "description": "Game Over Song. (assets/sounds/gameOverSFX.ogg)"
+        },
+        {
+            "name": "retrySFX",
+            "type": "String",
+            "description": "Game Over End SFX, used when retrying. (assets/sounds/gameOverEnd.ogg)"
+        },
+        {
+            "name": "stage",
+            "type": "Stage",
+            "description": "Current Stage."
+        },
+        {
+            "name": "validScore",
+            "type": "Bool",
+            "description": "Whenever the score will save when you beat the song."
+        },
+        {
+            "name": "canDie",
+            "type": "Bool",
+            "description": "Whenever the player can die."
+        },
+        {
+            "name": "ghostTapping",
+            "type": "Bool",
+            "description": "Whenever Ghost Tapping is enabled."
+        },
+        {
+            "name": "canDadDie",
+            "type": "Bool",
+            "description": "Whenever the opponent can die."
+        },
+        {
+            "name": "scrollSpeed",
+            "type": "Float",
+            "description": "Current scroll speed for all strums."
+        },
+        {
+            "name": "downscroll",
+            "type": "Bool",
+            "description": "Whenever the game is in downscroll or not. (Can be set)"
+        },
+        {
+            "name": "inst",
+            "type": "FlxSound",
+            "description": "Instrumental sound (Inst.ogg)."
+        },
+        {
+            "name": "vocals",
+            "type": "FlxSound",
+            "description": "Vocals sound (Vocals.ogg)."
+        },
+        {
+            "name": "dad",
+            "type": "Character",
+            "description": "Dad character."
+        },
+        {
+            "name": "gf",
+            "type": "Character",
+            "description": "Girlfriend character."
+        },
+        {
+            "name": "boyfriend",
+            "type": "Character",
+            "description": "Boyfriend character."
+        },
+        {
+            "name": "strumLine",
+            "type": "FlxObject",
+            "description": "Strum line position."
+        },
+        {
+            "name": "ratingNum",
+            "type": "Int",
+            "description": "Number of ratings."
+        },
+        {
+            "name": "camFollow",
+            "type": "FlxObject",
+            "description": "Object defining the camera follow target."
+        },
+        {
+            "name": "smoothTransitionData",
+            "type": "PlayStateTransitionData",
+            "description": "Previous cam follow."
+        },
+        {
+            "name": "playerStrums",
+            "type": "StrumLine",
+            "description": "Player strums."
+        },
+        {
+            "name": "cpuStrums",
+            "type": "StrumLine",
+            "description": "CPU strums."
+        },
+        {
+            "name": "player",
+            "type": "StrumLine",
+            "description": "Shortcut to `playerStrums`."
+        },
+        {
+            "name": "cpu",
+            "type": "StrumLine",
+            "description": "Shortcut to `cpuStrums`."
+        },
+        {
+            "name": "splashHandler",
+            "type": "SplashHandler",
+            "description": "Note splashes container."
+        },
+        {
+            "name": "muteVocalsOnMiss",
+            "type": "Bool",
+            "description": "Whenever the vocals should be muted when a note is missed."
+        },
+        {
+            "name": "canAccessDebugMenus",
+            "type": "Bool",
+            "description": "Whenever the player can press 7, 8 or 9 to access the debug menus."
+        },
+        {
+            "name": "allowGitaroo",
+            "type": "Bool",
+            "description": "Whether or not to show the secret gitaroo pause."
+        },
+        {
+            "name": "doIconBop",
+            "type": "Bool",
+            "description": "Whether or not to bop the icons on beat."
+        },
+        {
+            "name": "camZooming",
+            "type": "Bool",
+            "description": "Whenever cam zooming is enabled, enables on a note hit if not cancelled."
+        },
+        {
+            "name": "camZoomingInterval",
+            "type": "Int",
+            "description": "Interval of cam zooming (beats)."
+        },
+        {
+            "name": "camZoomingStrength",
+            "type": "Float",
+            "description": "How strong the cam zooms should be (defaults to 1)."
+        },
+        {
+            "name": "maxCamZoom",
+            "type": "Float",
+            "description": "Maximum amount of zoom for the camera."
+        },
+        {
+            "name": "curSong",
+            "type": "String",
+            "description": "Current song name (lowercase)."
+        },
+        {
+            "name": "curStage",
+            "type": "String",
+            "description": "Current stage name."
+        },
+        {
+            "name": "gfSpeed",
+            "type": "Int",
+            "description": "Interval at which Girlfriend dances."
+        },
+        {
+            "name": "health",
+            "type": "Float",
+            "description": "Current health. Goes from 0 to maxHealth (defaults to 2)."
+        },
+        {
+            "name": "maxHealth",
+            "type": "Float",
+            "description": "Maximum health the player can have. Defaults to 2."
+        },
+        {
+            "name": "combo",
+            "type": "Int",
+            "description": "Current combo."
+        },
+        {
+            "name": "comboBreaks",
+            "type": "Bool",
+            "description": "Whenever the misses should show 'Combo Breaks' instead of 'Misses'."
+        },
+        {
+            "name": "healthBarBG",
+            "type": "FlxSprite",
+            "description": "Health bar background."
+        },
+        {
+            "name": "healthBar",
+            "type": "FlxBar",
+            "description": "Health bar."
+        },
+        {
+            "name": "generatedMusic",
+            "type": "Bool",
+            "description": "Whenever the music has been generated."
+        },
+        {
+            "name": "startingSong",
+            "type": "Bool",
+            "description": "Whenever the song is currently being started."
+        },
+        {
+            "name": "iconP1",
+            "type": "HealthIcon",
+            "description": "Player's icon."
+        },
+        {
+            "name": "iconP2",
+            "type": "HealthIcon",
+            "description": "Opponent's icon."
+        },
+        {
+            "name": "camHUD",
+            "type": "HudCamera",
+            "description": "Camera for the HUD (notes, misses)."
+        },
+        {
+            "name": "camGame",
+            "type": "FlxCamera",
+            "description": "Camera for the game (stages, characters)."
+        },
+        {
+            "name": "songScore",
+            "type": "Int",
+            "description": "The player's current score."
+        },
+        {
+            "name": "misses",
+            "type": "Int",
+            "description": "The player's amount of misses."
+        },
+        {
+            "name": "accuracy",
+            "type": "Float",
+            "description": "The player's accuracy (shortcut to `accuracyPressedNotes / totalAccuracyAmount`)."
+        },
+        {
+            "name": "accuracyPressedNotes",
+            "type": "Float",
+            "description": "The number of pressed notes."
+        },
+        {
+            "name": "totalAccuracyAmount",
+            "type": "Float",
+            "description": "The total accuracy amount."
+        },
+        {
+            "name": "scoreTxt",
+            "type": "FunkinText",
+            "description": "FunkinText that shows your score."
+        },
+        {
+            "name": "missesTxt",
+            "type": "FunkinText",
+            "description": "FunkinText that shows your amount of misses."
+        },
+        {
+            "name": "accuracyTxt",
+            "type": "FunkinText",
+            "description": "FunkinText that shows your accuracy."
+        },
+        {
+            "name": "campaignScore",
+            "type": "Int",
+            "description": "Score for the current week."
+        },
+        {
+            "name": "campaignMisses",
+            "type": "Int",
+            "description": "Misses for the current week."
+        },
+        {
+            "name": "campaignAccuracy",
+            "type": "Float",
+            "description": "Accuracy for the current week."
+        },
+        {
+            "name": "campaignAccuracyTotal",
+            "type": "Float",
+            "description": "Total accuracy for the current week."
+        },
+        {
+            "name": "campaignAccuracyCount",
+            "type": "Float",
+            "description": "Count of accuracy for the current week."
+        },
+        {
+            "name": "defaultCamZoom",
+            "type": "Float",
+            "description": "Camera zoom at which the game lerps to."
+        },
+        {
+            "name": "camGameZoomLerp",
+            "type": "Float",
+            "description": "Speed at which the game camera zoom lerps to."
+        },
+        {
+            "name": "defaultHudZoom",
+            "type": "Float",
+            "description": "Camera zoom at which the hud lerps to."
+        },
+        {
+            "name": "camHUDZoomLerp",
+            "type": "Float",
+            "description": "Speed at which the hud camera zoom lerps to."
+        },
+        {
+            "name": "daPixelZoom",
+            "type": "Float",
+            "description": "Zoom for the pixel assets."
+        },
+        {
+            "name": "inCutscene",
+            "type": "Bool",
+            "description": "Whenever the game is currently in a cutscene or not."
+        },
+        {
+            "name": "playCutscenes",
+            "type": "Bool",
+            "description": "Whenever the game should play the cutscenes. Defaults to whenever the game is currently in Story Mode or not."
+        },
+        {
+            "name": "seenCutscene",
+            "type": "Bool",
+            "description": "Whenever the game has already played a specific cutscene for the current song."
+        },
+        {
+            "name": "cutscene",
+            "type": "String",
+            "description": "Cutscene script path."
+        },
+        {
+            "name": "endCutscene",
+            "type": "String",
+            "description": "End cutscene script path."
+        },
+        {
+            "name": "curRating",
+            "type": "ComboRating",
+            "description": "Last rating (may be null)."
+        },
+        {
+            "name": "startTimer",
+            "type": "FlxTimer",
+            "description": "Timer for the start countdown."
+        },
+        {
+            "name": "events",
+            "type": "Array<ChartEvent>",
+            "description": "Remaining events."
+        },
+        {
+            "name": "curCameraTarget",
+            "type": "Int",
+            "description": "Current camera target. -1 means no automatic camera targeting."
+        },
+        {
+            "name": "introLength",
+            "type": "Int",
+            "description": "Length of the intro countdown."
+        },
+        {
+            "name": "introSprites",
+            "type": "Array<String>",
+            "description": "Array of sprites for the intro."
+        },
+        {
+            "name": "introSounds",
+            "type": "Array<String>",
+            "description": "Array of sounds for the intro."
+        },
+        {
+            "name": "paused",
+            "type": "Bool",
+            "description": "Whenever the game is paused or not."
+        },
+        {
+            "name": "startedCountdown",
+            "type": "Bool",
+            "description": "Whenever the countdown has started or not."
+        },
+        {
+            "name": "canPause",
+            "type": "Bool",
+            "description": "Whenever the game can be paused or not."
+        },
+        {
+            "name": "accFormat",
+            "type": "FlxTextFormat",
+            "description": "Format for the accuracy rating."
+        },
+        {
+            "name": "endingSong",
+            "type": "Bool",
+            "description": "Whenever the song is ending or not."
+        },
+        {
+            "name": "comboGroup",
+            "type": "RotatingSpriteGroup",
+            "description": "Group containing all of the combo sprites."
+        },
+        {
+            "name": "defaultDisplayRating",
+            "type": "Bool",
+            "description": "Whenever the Rating sprites should be shown or not."
+        },
+        {
+            "name": "defaultDisplayCombo",
+            "type": "Bool",
+            "description": "Whenever the Combo sprite should be shown or not."
+        },
+        {
+            "name": "bpm",
+            "type": "Float",
+            "description": "Current BPM."
+        },
+        {
+            "name": "crochet",
+            "type": "Float",
+            "description": "Current Crochet (time per beat), in milliseconds."
+        },
+        {
+            "name": "stepCrochet",
+            "type": "Float",
+            "description": "Current StepCrochet (time per step), in milliseconds."
+        },
+        {
+            "name": "beatsPerMeasure",
+            "type": "Float",
+            "description": "Number of beats per measure (top number in time signature). Defaults to 4."
+        },
+        {
+            "name": "stepsPerBeat",
+            "type": "Float",
+            "description": "Number of steps per beat (bottom number in time signature). Defaults to 4."
+        },
+        {
+            "name": "songPosition",
+            "type": "Float",
+            "description": "Current position of the song, in milliseconds."
+        },
+        {
+            "name": "songOffset",
+            "type": "Float",
+            "description": "Offset of the song."
+        },
+        {
+            "name": "curStep",
+            "type": "Int",
+            "description": "Current step."
+        },
+        {
+            "name": "curBeat",
+            "type": "Int",
+            "description": "Current beat."
+        },
+        {
+            "name": "curMeasure",
+            "type": "Int",
+            "description": "Current measure."
+        },
+        {
+            "name": "curStepFloat",
+            "type": "Float",
+            "description": "Current step, as a `Float` (ex: 4.94, instead of 4)."
+        },
+        {
+            "name": "curBeatFloat",
+            "type": "Float",
+            "description": "Current beat, as a `Float` (ex: 1.24, instead of 1)."
+        },
+        {
+            "name": "curMeasureFloat",
+            "type": "Float",
+            "description": "Current measure, as a `Float` (ex: 1.24, instead of 1)."
+        }
+    ]
+}

@@ -173,6 +173,82 @@
                 }
             ],
             "isGlobal": true
+        },
+        {
+            "name": "onNoteHit",
+            "args": [
+                {
+                    "name": "event",
+                    "type": "NoteHitEvent"
+                }
+            ],
+            "isGlobal": false
+        },
+        {
+            "name": "onPlayerHit",
+            "args": [
+                {
+                    "name": "event",
+                    "type": "NoteHitEvent"
+
+                }
+            ],
+            "isGlobal": false
+        },
+        {
+            "name": "onDadHit",
+            "args": [
+                {
+                    "name": "event",
+                    "type": "NoteHitEvent"
+                }
+            ],
+            "isGlobal": false
+        },
+        {
+            "name": "onRatingUpdate",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onPreGenerateStrums",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onPostGenerateStrums",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onStartCountdown",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onCountdown",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onPostCountdown",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "closeSubstate",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onSongStart",
+            "args": [],
+            "isGlobal": false
+        },
+        {
+            "name": "onStartSong",
+            "args": [],
+            "isGlobal": false
         }
     ],
     "events": [
